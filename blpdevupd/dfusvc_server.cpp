@@ -72,7 +72,6 @@ int DFUServiceServer::waitForConnection(void)
     }
     else {
         // The client could not connect, so close the pipe. 
-        //CloseHandle(d_hPipe);
         return -1;
     }
 
@@ -94,7 +93,7 @@ int DFUServiceServer::processRequest(void)
     auto cmd = dfusvc::ServerCommandFactory::makeServerCommand(request);
 
     if (nullptr == cmd) {
-        return -1;
+        return this->sendResponse(dfusvc::ErrorResponse(e_unknownCmdErr, "Receive unknown command"));
     }
 
     // Execute command
@@ -270,6 +269,8 @@ int ServerOpenCommand::execute(std::function<int(dfusvc::CommandResponse&)> fRes
 
     std::cout << "Looking for DFU device...." << std::endl;
 
+
+    std::cout << "vid: " << req.vid() << " pid: " << req.pid()  << std::endl;
     // Search DFU device for 5 seconds
     int delay = 5;
     while (delay--) {
@@ -332,7 +333,7 @@ int ServerTerminateCommand::execute(std::function<int(dfusvc::CommandResponse&)>
     TerminateRequest req;
     int ret = -1;
     if (0 == req.deserialize(d_rawRequest)) {
-        ret = -2;
+        ret = -1;
     }
 
     if (nullptr == fRespSend) {

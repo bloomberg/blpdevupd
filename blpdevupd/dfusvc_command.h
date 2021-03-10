@@ -26,7 +26,8 @@ enum ErrorType {
     e_transportErr,
     e_timeoutErr,
     e_deviceErr,
-    e_commErr
+    e_commErr,
+    e_unknownCmdErr
 };
 
 

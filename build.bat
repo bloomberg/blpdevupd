@@ -3,7 +3,8 @@ setlocal
 
 REM ============== BUILD CONFIG ========================
 set VS_BUILDTOOLS_VERSION=16.4.3
-set BLPDEVUPD_VERSION=0.1.3
+set BLPDEVUPD_VERSION=master
+for /f "tokens=2" %%I in ('git branch 2^> NUL ^| findstr /b "* "') do set BLPDEVUPD_VERSION=%%I
 set DEVKIT_PACKAGE_PATH=devkit_package\%BLPDEVUPD_VERSION%
 REM ====================================================
 
@@ -29,12 +30,8 @@ goto :EOF
 	goto :EOF
 
 :BUILD
-	echo "Starting build commands in parallel..."
-	(
-	start msbuild .\build\x86-debug\libdfu.sln /t:Build /p:Configuration=Debug /p:Platform=Win32
-	start msbuild .\build\x86-release\libdfu.sln /t:Build /p:Configuration=Release /p:Platform=Win32
-	) | pause
-	echo "All done..."
+	msbuild .\build\x86-debug\libdfu.sln /t:Build /p:Configuration=Debug /p:Platform=Win32
+	msbuild .\build\x86-release\libdfu.sln /t:Build /p:Configuration=Release /p:Platform=Win32
 	goto :EOF
 
 :PACKAGE

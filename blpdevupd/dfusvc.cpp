@@ -14,7 +14,7 @@ int main(int argc, TCHAR * argv[])
 {
 
     if (1 == argc) {
-        std::cout << "Bloomberg device updater v0.1.3\n"
+        std::cout << "Bloomberg device updater v0.1.4\n"
             << "Copyright 2020 Bloomberg Finance LP.\n"
             << "Some of this program's components are licensed under the GPLv2 and LGPLv2.1 licenses.\n"
             << "Source code can be obtained from https://github.com/bloomberg/blpdevupd.\n";
@@ -52,31 +52,21 @@ int main(int argc, TCHAR * argv[])
         return -1;
     }
 
-    // The main loop creates an instance of the named pipe and 
-    // then waits for a client to connect to it. When the client 
-    // connects, a thread is created to handle communications 
-    // with that client, and this loop is free to wait for the
-    // next client connect request. It is an infinite loop.
 
-    for (;;)
-    {
-        auto svc =  std::make_shared<dfusvc::DFUServiceServer>(pipename);
-        if (svc->waitForConnection() != 0) {
-            continue;
-        }
-        std::cout << "Client connected" << std::endl;
-        int ret = 0;
-        while (1) {
-            ret = svc->processRequest();
-            if (ret != 0) {
-                break;
-            }
-        }
-        if (ret == -2) {
+    auto svc =  std::make_shared<dfusvc::DFUServiceServer>(pipename);
+    if (svc->waitForConnection() != 0) {
+        return -1;
+    }
+    std::cout << "Client connected" << std::endl;
+
+    int ret = 0;
+    while (1) {
+        ret = svc->processRequest();
+        if (ret != 0) {
             break;
         }
-           
     }
+           
     std::cout << "Exiting process" << std::endl;
-    return 0;
+    return ret;
 }
