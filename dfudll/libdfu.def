@@ -1,0 +1,6 @@
+LIBRARY      "libdfu.dll"
+
+EXPORTS
+open_device
+download
+close_device

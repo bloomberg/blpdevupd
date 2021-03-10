@@ -1,2 +1,2 @@
-# dfuutil
-dfuutil for BBG hardware firmware upgrade
+# blpdevupd
+blpdevupd devkit for BBG hardware firmware upgrade
