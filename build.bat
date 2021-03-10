@@ -3,7 +3,7 @@ setlocal
 
 REM ============== BUILD CONFIG ========================
 set VS_BUILDTOOLS_VERSION=16.4.3
-set BLPDEVUPD_VERSION=0.1.2
+set BLPDEVUPD_VERSION=0.1.3
 set DEVKIT_PACKAGE_PATH=devkit_package\%BLPDEVUPD_VERSION%
 REM ====================================================
 

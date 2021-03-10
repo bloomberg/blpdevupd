@@ -71,6 +71,8 @@ extern "C" int open_device(uint16_t vid, uint16_t pid)
 	if (vid != 0) {
 		dfu_util->match_vendor_dfu = vid;
 		dfu_util->match_product_dfu = pid;
+		dfu_util->match_vendor = 0x10000;
+		dfu_util->match_product = 0x10000;
 	}
 	
 	probe_devices(dfu_util.get());
