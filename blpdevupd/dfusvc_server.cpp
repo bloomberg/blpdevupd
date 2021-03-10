@@ -21,7 +21,7 @@
 namespace dfusvc {
 
 static boost::unordered_map<int, boost::shared_ptr<DFUTransport>> s_deviceMap;
-static int s_gcount = 0;
+static int s_gcount = 1;
 
 DFUServiceServer::DFUServiceServer(std::string name)
 {
@@ -252,6 +252,7 @@ std::shared_ptr<ServerCommand> ServerCommandFactory::makeServerCommand(std::vect
 }
 
 ServerOpenCommand::ServerOpenCommand(std::vector<uint8_t> raw)
+: d_rawRequest(raw)
 {
 
 }
@@ -291,6 +292,7 @@ int ServerOpenCommand::execute(std::function<int(dfusvc::CommandResponse&)> fRes
 }
 
 ServerCloseCommand::ServerCloseCommand(std::vector<uint8_t> raw)
+: d_rawRequest(raw)
 {
 }
 
@@ -321,6 +323,7 @@ int ServerCloseCommand::execute(std::function<int(dfusvc::CommandResponse&)> fRe
 }
 
 ServerTerminateCommand::ServerTerminateCommand(std::vector<uint8_t> raw)
+: d_rawRequest(raw)
 {
 }
 
