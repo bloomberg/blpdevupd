@@ -153,7 +153,7 @@ status_again:
 	printf("Determining device status: ");
 	ret = dfu_get_status(dfu_util->dfu_root, &status);
 	if (ret < 0) {
-		printf("error get_status: %s", libusb_error_name(ret));
+		printf("error get_status: %s\n", libusb_error_name(ret));
 	}
 	printf("state = %s, status = %d\n",
 		dfu_state_to_string(status.bState), status.bStatus);
@@ -163,21 +163,26 @@ status_again:
 	switch (status.bState) {
 	case DFU_STATE_appIDLE:
 	case DFU_STATE_appDETACH:
-		printf("Device still in Runtime Mode!");
+		printf("Device still in Runtime Mode!\n");
 		break;
 	case DFU_STATE_dfuERROR:
 		printf("dfuERROR, clearing status\n");
-		if (dfu_clear_status(dfu_util->dfu_root->dev_handle, dfu_util->dfu_root->interface) < 0) {
-			printf("error clear_status");
-		}
-		goto status_again;
+        ret = dfu_clear_status(dfu_util->dfu_root->dev_handle, dfu_util->dfu_root->interface);
+        if (ret < 0) {
+            printf("error clear_status, ret = %s\n", libusb_error_name(ret));
+            // If device is in bad status, abort retry to avoid looping
+            return ret;
+        }
+        goto status_again;
 		break;
 	case DFU_STATE_dfuDNLOAD_IDLE:
 	case DFU_STATE_dfuUPLOAD_IDLE:
 		printf("aborting previous incomplete transfer\n");
-		if (dfu_abort(dfu_util->dfu_root->dev_handle, dfu_util->dfu_root->interface) < 0) {
-			printf("can't send DFU_ABORT");
-		}
+        ret = dfu_abort(dfu_util->dfu_root->dev_handle, dfu_util->dfu_root->interface);
+        if (ret < 0) {
+            printf("can't send DFU_ABORT, ret = %s\n", libusb_error_name(ret));
+            return ret;
+        }
 		goto status_again;
 		break;
 	case DFU_STATE_dfuIDLE:

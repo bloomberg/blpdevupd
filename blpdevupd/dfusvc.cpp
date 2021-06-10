@@ -14,7 +14,7 @@ int main(int argc, TCHAR * argv[])
 {
 
     if (1 == argc) {
-        std::cout << "Bloomberg device updater v0.1.4\n"
+        std::cout << "Bloomberg device updater v0.1.5\n"
             << "Copyright 2020 Bloomberg Finance LP.\n"
             << "Some of this program's components are licensed under the GPLv2 and LGPLv2.1 licenses.\n"
             << "Source code can be obtained from https://github.com/bloomberg/blpdevupd.\n";

@@ -3,9 +3,7 @@ setlocal
 
 REM ============== BUILD CONFIG ========================
 set VS_BUILDTOOLS_VERSION=16.4.3
-set BLPDEVUPD_VERSION=master
-for /f "tokens=2" %%I in ('git branch 2^> NUL ^| findstr /b "* "') do set BLPDEVUPD_VERSION=%%I
-set DEVKIT_PACKAGE_PATH=devkit_package\%BLPDEVUPD_VERSION%
+set DEVKIT_PACKAGE_PATH=devkit_package
 REM ====================================================
 
 REM ==============  BUILD ORDER ==============
